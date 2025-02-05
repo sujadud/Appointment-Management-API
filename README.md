@@ -223,9 +223,8 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
     
     ```
     {
-      "id": "GUID (optional)",
+      "id": "GUID",
       "name": "Dr. Jane Smith",
-      "specialization": "Cardiology"
     }
     
     ```
@@ -250,8 +249,8 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
     Content-Type: application/json
     
     {
+      "id": "e580ad49-1bd7-40cc-b75d-73436d8100ef",
       "name": "Dr. Jane Smith",
-      "specialization": "Cardiology"
     }
     
     ```
@@ -282,7 +281,6 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
     {
       "id": "123e4567-e89b-12d3-a456-426614174000",
       "name": "Dr. John Doe",
-      "specialization": "Neurology"
     }
     
     ```
@@ -312,7 +310,6 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
     {
       "id": "123e4567-e89b-12d3-a456-426614174000",
       "name": "Dr. John Doe",
-      "specialization": "Neurology"
     }
     
     ```
