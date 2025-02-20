@@ -1,4 +1,4 @@
-﻿namespace Appointment_Management.API.Domain.Entities.Enums
+﻿namespace Appointment_Management.Domain.Entities.Enums
 {
     public enum RoleType
     {
