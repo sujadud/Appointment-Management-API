@@ -30,6 +30,9 @@ namespace Appointment_Management.Infrastructure.Data
                 entity.Property(u => u.Salt)
                       .IsRequired()
                       .HasMaxLength(100);
+                entity.Property(u => u.Role)
+                      .HasConversion<string>()
+                      .IsRequired();
             });
 
             modelBuilder.Entity<Doctor>(entity =>
