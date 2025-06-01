@@ -1,5 +1,4 @@
-﻿using Appointment_Management.Domain.Entities.Enums;
-using Appointment_Management.Application.Services;
+﻿using Appointment_Management.Application.Services;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -20,19 +19,13 @@ namespace Appointment_Management.Application.Services.Auth
             _config = configuration;
         }
 
-        public async Task<bool> RegisterUser(string username, string password, RoleType role)
+        public async Task<bool> RegisterUser(string username, string password)
         {
             if (await _userRepository.GetUserByUsernameAsync(username) != null)
-                return false;
+                return false; // Username already exists
 
             var passwordHash = PasswordService.HashPassword(password, out string salt);
-            var user = new User 
-            { 
-                Username = username, 
-                PasswordHash = passwordHash, 
-                Salt = salt, 
-                Role = role
-            };
+            var user = new User { Username = username, PasswordHash = passwordHash, Salt = salt };
             await _userRepository.AddUserAsync(user);
             return true;
         }
@@ -51,24 +44,16 @@ namespace Appointment_Management.Application.Services.Auth
             var key = _config["JwtSettings:Secret"];
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 Issuer = _config["JwtSettings:Issuer"],
                 Audience = _config["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
-            return new JwtSecurityTokenHandler()
-                            .WriteToken(new JwtSecurityTokenHandler()
-                            .CreateToken(tokenDescriptor));
+            return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityTokenHandler().CreateToken(tokenDescriptor));
         }
     }
 }

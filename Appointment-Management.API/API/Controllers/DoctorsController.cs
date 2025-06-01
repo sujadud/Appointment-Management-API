@@ -17,7 +17,7 @@ namespace Appointment_Management.API.API.Controllers
             _doctorService = doctorService;
         }
 
-        [Authorize(Roles = "User,Doctor,Admin")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllDoctors()
         {
@@ -25,7 +25,7 @@ namespace Appointment_Management.API.API.Controllers
             return Ok(doctors);
         }
 
-        [Authorize(Roles = "User,Doctor,Admin")]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDoctorById(Guid id)
         {
@@ -37,7 +37,7 @@ namespace Appointment_Management.API.API.Controllers
             return Ok(doctor);
         }
 
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateDoctor([FromBody] DoctorDto doctor)
         {
@@ -50,7 +50,6 @@ namespace Appointment_Management.API.API.Controllers
             return CreatedAtAction(nameof(GetDoctorById), new { id = doctor.Id }, doctor);
         }
 
-        [Authorize(Roles = "Doctor,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateDoctor(Guid id, [FromBody] DoctorDto doctor)
         {
@@ -69,7 +68,6 @@ namespace Appointment_Management.API.API.Controllers
             return Ok(doctor);
         }
 
-        [Authorize(Roles = "Doctor,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDoctor(Guid id)
         {

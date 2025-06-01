@@ -18,7 +18,7 @@ namespace Appointment_Management.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto model)
         {
-            var success = await _authService.RegisterUser(model.Username, model.Password, model.Role);
+            var success = await _authService.RegisterUser(model.Username, model.Password);
             if (!success)
                 return BadRequest(new { message = "Username already exists" });
 

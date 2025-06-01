@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Appointment_Management.API.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AppointmentsController : ControllerBase
@@ -24,7 +25,6 @@ namespace Appointment_Management.API.API.Controllers
         }
 
         // GET: api/appointments
-        [Authorize(Roles = "Doctor,Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllAppointments()
         {
@@ -33,7 +33,6 @@ namespace Appointment_Management.API.API.Controllers
         }
 
         // GET: api/appointments/{id}
-        [Authorize(Roles = "User,Doctor,Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAppointmentById(Guid id)
         {
@@ -46,7 +45,6 @@ namespace Appointment_Management.API.API.Controllers
         }
 
         // POST: api/appointments
-        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointment)
         {
@@ -76,7 +74,6 @@ namespace Appointment_Management.API.API.Controllers
         }
 
         // PUT: api/appointments/{id}
-        [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentDto appointment)
         {
@@ -96,7 +93,6 @@ namespace Appointment_Management.API.API.Controllers
         }
 
         // DELETE: api/appointments/{id}
-        [Authorize(Roles = "User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppointment(Guid id)
         {

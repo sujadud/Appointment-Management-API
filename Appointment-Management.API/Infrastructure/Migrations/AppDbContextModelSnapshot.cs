@@ -78,10 +78,6 @@ namespace Appointment_Management.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(100)
