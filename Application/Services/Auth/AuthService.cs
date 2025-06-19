@@ -6,10 +6,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Application.Interfaces.IAuth;
 
 namespace Appointment_Management.Application.Services.Auth
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
@@ -22,18 +23,20 @@ namespace Appointment_Management.Application.Services.Auth
 
         public async Task<bool> RegisterUser(string username, string password, RoleType role)
         {
-            if (await _userRepository.GetUserByUsernameAsync(username) != null)
+            User userOB = await _userRepository.GetUserByUsernameAsync(username);
+            if (userOB == null)
                 return false;
 
             var passwordHash = PasswordService.HashPassword(password, out string salt);
-            var user = new User 
-            { 
-                Username = username, 
-                PasswordHash = passwordHash, 
-                Salt = salt, 
+            var user = new User
+            {
+                Username = username,
+                PasswordHash = passwordHash,
+                Salt = salt,
                 Role = role
             };
             await _userRepository.AddUserAsync(user);
+
             return true;
         }
 

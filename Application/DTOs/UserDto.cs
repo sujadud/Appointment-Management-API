@@ -10,6 +10,6 @@ namespace Appointment_Management.Application.DTOs
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]
-        public RoleType Role { get; set; } = RoleType.User;
+        public int Role { get; set; } = (int)RoleType.User;
     }
 }

@@ -4,7 +4,7 @@ using Appointment_Management.Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Appointment_Management.API.API.Controllers
+namespace Appointment_Management.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
