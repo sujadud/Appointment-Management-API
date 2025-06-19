@@ -2,6 +2,7 @@
 using Appointment_Management.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Appointment_Management.API.API.Controllers
 {
@@ -21,6 +22,10 @@ namespace Appointment_Management.API.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllDoctors()
         {
+            // Debug claims
+            var identity = User.Identity as ClaimsIdentity;
+            var claims = identity?.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            //_logger.LogInformation("User Claims: {@Claims}", claims);
             var doctors = await _doctorService.GetAllAsync();
             return Ok(doctors);
         }
