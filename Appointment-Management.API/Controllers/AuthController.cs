@@ -2,6 +2,7 @@
 using Appointment_Management.Application.Services.Auth;
 using Appointment_Management.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Appointment_Management.API.Controllers
 {
@@ -34,6 +35,19 @@ namespace Appointment_Management.API.Controllers
                 return Unauthorized(new { message = "Invalid credentials" });
 
             return Ok(new { Token = token });
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserDto model)
+        {
+            // Debug claims
+            var identity = User.Identity as ClaimsIdentity;
+            //var claims = identity?.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            //_logger.LogInformation("User Claims: {@Claims}", claims);
+            //var success = await _authService.ChangePassword(model.Username, model.Password);
+            //if (!success)
+            //    return BadRequest(new { message = "Failed to change password" });
+            return Ok(new { message = "Password changed successfully" });
         }
     }
 }

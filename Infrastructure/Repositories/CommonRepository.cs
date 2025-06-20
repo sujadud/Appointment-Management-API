@@ -1,6 +1,10 @@
 ﻿using Appointment_Management.Domain.Interfaces;
+using Appointment_Management.Domain.Interfaces.IAudit;
 using Appointment_Management.Infrastructure.Data;
+using Domain.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Appointment_Management.Infrastructure.Repositories
 {
@@ -37,6 +41,9 @@ namespace Appointment_Management.Infrastructure.Repositories
 
         public virtual async Task UpdateAsync(T entity)
         {
+            //Could you please analyze the IEntity for a specific reason? I have updated it by adding timestamps. When someone attempts to add or update a value for any entity that extends the base IEntity, it will automatically populate the CreatedAt and CreatedBy fields when adding a new value, and the UpdatedAt and UpdatedBy fields when updating an existing value.
+            //Can we update that into CommonRepository, or if you have any suggestions?
+            entity.UpdatedAt = DateTime.UtcNow;
             _entities.Update(entity);
             await Task.CompletedTask;
         }

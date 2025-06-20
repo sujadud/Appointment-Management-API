@@ -1,4 +1,6 @@
-﻿namespace Appointment_Management.Domain.Interfaces
+﻿using Appointment_Management.Domain.Interfaces.IAudit;
+
+namespace Appointment_Management.Domain.Interfaces
 {
     public interface ICommonRepository<T> where T : class, IEntity
     {
