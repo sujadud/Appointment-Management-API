@@ -1,5 +1,6 @@
 ﻿using Appointment_Management.Application.DTOs;
 using Appointment_Management.Application.Services.Auth;
+using Appointment_Management.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Appointment_Management.API.Controllers
@@ -18,7 +19,7 @@ namespace Appointment_Management.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto model)
         {
-            var success = await _authService.RegisterUser(model.Username, model.Password, model.Role);
+            var success = await _authService.RegisterUser(model.Username, model.Password, (RoleType)model.Role);
             if (!success)
                 return BadRequest(new { message = "Username already exists" });
 
