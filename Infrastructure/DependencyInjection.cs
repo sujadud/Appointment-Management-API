@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Appointment_Management.Domain.Interfaces;
 using Appointment_Management.Infrastructure.Repositories;
 using Appointment_Management.Infrastructure.Data;
+using Appointment_Management.Infrastructure.Services;
 
 namespace Infrastructure;
 public static class DependencyInjection
@@ -20,9 +21,10 @@ public static class DependencyInjection
             {
                 config.MigrationsAssembly(nameof(Infrastructure));
             });
-
         });
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
 

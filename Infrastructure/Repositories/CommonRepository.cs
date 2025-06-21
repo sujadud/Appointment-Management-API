@@ -1,22 +1,24 @@
 ﻿using Appointment_Management.Domain.Interfaces;
 using Appointment_Management.Domain.Interfaces.IAudit;
 using Appointment_Management.Infrastructure.Data;
+using Appointment_Management.Infrastructure.Services;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Appointment_Management.Infrastructure.Repositories
 {
     public class CommonRepository<T> : ICommonRepository<T> where T : class, IEntity
     {
         private readonly AppDbContext _context;
-        public readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CommonRepository(AppDbContext context)
+        public CommonRepository(AppDbContext context, ICurrentUserService currentUserService)
         {
             _context = context;
             _entities = context.Set<T>();
+            _currentUserService = currentUserService;
         }
 
         public virtual async Task<bool> ExistsAsync(Guid doctorId)
@@ -36,14 +38,23 @@ namespace Appointment_Management.Infrastructure.Repositories
 
         public virtual async Task AddAsync(T entity)
         {
+            var currentUserId = _currentUserService.GetCurrentUserId();
+            var now = DateTime.UtcNow;
+
+            entity.CreatedBy = currentUserId;
+            entity.CreatedAt = now;
+            entity.UpdatedBy = currentUserId;
+            entity.UpdatedAt = now;
+
             await _entities.AddAsync(entity);
         }
 
         public virtual async Task UpdateAsync(T entity)
         {
-            //Could you please analyze the IEntity for a specific reason? I have updated it by adding timestamps. When someone attempts to add or update a value for any entity that extends the base IEntity, it will automatically populate the CreatedAt and CreatedBy fields when adding a new value, and the UpdatedAt and UpdatedBy fields when updating an existing value.
-            //Can we update that into CommonRepository, or if you have any suggestions?
+            var currentUserId = _currentUserService.GetCurrentUserId();
+            entity.UpdatedBy = currentUserId;
             entity.UpdatedAt = DateTime.UtcNow;
+
             _entities.Update(entity);
             await Task.CompletedTask;
         }
@@ -59,6 +70,19 @@ namespace Appointment_Management.Infrastructure.Repositories
 
         public virtual async Task SaveAsync()
         {
+            // Update audit fields for modified entities before saving
+            var entries = _context.ChangeTracker.Entries<IEntity>()
+                .Where(e => e.State == EntityState.Modified);
+
+            var currentUserId = _currentUserService.GetCurrentUserId();
+            var now = DateTime.UtcNow;
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.UpdatedBy = currentUserId;
+                entry.Entity.UpdatedAt = now;
+            }
+
             await _context.SaveChangesAsync();
         }
     }
