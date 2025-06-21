@@ -1,5 +1,5 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services.Auth;
+﻿using Application.DTOs;
+using Application.Services.Auth;
 using Appointment_Management.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

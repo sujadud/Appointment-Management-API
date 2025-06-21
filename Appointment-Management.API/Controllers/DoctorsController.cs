@@ -1,8 +1,7 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services;
+﻿using Application.DTOs;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Appointment_Management.API.Controllers
 {

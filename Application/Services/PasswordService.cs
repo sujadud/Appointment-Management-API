@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace Appointment_Management.Application.Services
+﻿namespace Application.Services
 {
     public class PasswordService
     {

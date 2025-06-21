@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Appointment_Management.Application.DTOs
+namespace Application.DTOs
 {
     public class DoctorDto
     {

@@ -1,6 +1,6 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services;
-using Appointment_Management.Application.Validation;
+﻿using Application.DTOs;
+using Application.Services;
+using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +14,8 @@ namespace Appointment_Management.API.Controllers
         private readonly DoctorService _doctorService;
         private readonly AppointmentValidator _validator;
 
-        public AppointmentsController(AppointmentService appointmentService, 
-                                        AppointmentValidator appointmentValidator, 
+        public AppointmentsController(AppointmentService appointmentService,
+                                        AppointmentValidator appointmentValidator,
                                         DoctorService doctorService)
         {
             _appointmentService = appointmentService;

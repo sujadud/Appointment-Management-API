@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Appointment_Management.Domain.Interfaces;
-using Appointment_Management.Infrastructure.Repositories;
+﻿using Appointment_Management.Domain.Interfaces;
 using Appointment_Management.Infrastructure.Data;
+using Appointment_Management.Infrastructure.Repositories;
 using Appointment_Management.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 public static class DependencyInjection

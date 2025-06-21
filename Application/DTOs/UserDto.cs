@@ -1,7 +1,7 @@
 ﻿using Appointment_Management.Domain.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Appointment_Management.Application.DTOs
+namespace Application.DTOs
 {
     public class UserDto
     {

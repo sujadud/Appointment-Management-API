@@ -1,8 +1,8 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Domain.Interfaces;
+﻿using Application.DTOs;
 using Appointment_Management.Domain.Entities;
+using Appointment_Management.Domain.Interfaces;
 
-namespace Appointment_Management.Application.Services
+namespace Application.Services
 {
     public class AppointmentService
     {
@@ -11,7 +11,7 @@ namespace Appointment_Management.Application.Services
         public AppointmentService(ICommonRepository<Appointment> repository)
         {
             _repository = repository;
-        }        
+        }
 
         public async Task SaveChangesAsync()
         {
@@ -21,7 +21,7 @@ namespace Appointment_Management.Application.Services
         public async Task<AppointmentDto> GetByIdAsync(Guid id)
         {
             var appointment = await _repository.GetByIdAsync(id);
-            return new AppointmentDto 
+            return new AppointmentDto
             {
                 Id = appointment.Id,
                 PatientName = appointment.Name,

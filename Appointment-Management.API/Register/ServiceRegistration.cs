@@ -1,6 +1,6 @@
-﻿using Appointment_Management.Application.Services;
-using Appointment_Management.Application.Services.Auth;
-using Appointment_Management.Application.Validation;
+﻿using Application.Services;
+using Application.Services.Auth;
+using Application.Validation;
 using Appointment_Management.Domain.Interfaces;
 using Appointment_Management.Infrastructure.Repositories;
 using FluentValidation;

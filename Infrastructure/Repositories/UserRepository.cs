@@ -16,13 +16,13 @@ namespace Appointment_Management.Infrastructure.Repositories
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            if(username is null) throw new ArgumentNullException(nameof(username));
+            if (username is null) throw new ArgumentNullException(nameof(username));
             return await _context.Users.FirstOrDefaultAsync(predicate: u => u.Username == username);
         }
 
         public async Task AddUserAsync(User user)
         {
-            if(user is not null)
+            if (user is not null)
             {
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();

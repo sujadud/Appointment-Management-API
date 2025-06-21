@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Appointment_Management.Domain.Interfaces.IAudit;
 using System.ComponentModel.DataAnnotations;
-using Appointment_Management.Domain.Interfaces.IAudit;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Appointment_Management.Domain.Entities
 {

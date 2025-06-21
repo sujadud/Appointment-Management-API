@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.IAuth;
+using Application.Services;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Entities.Enums;
 using Appointment_Management.Domain.Interfaces;
@@ -6,12 +7,11 @@ using Appointment_Management.Infrastructure.Data;
 using Appointment_Management.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Appointment_Management.Application.Services.Auth
+namespace Application.Services.Auth
 {
     public class AuthService : CommonRepository<User>, IAuthService
     {

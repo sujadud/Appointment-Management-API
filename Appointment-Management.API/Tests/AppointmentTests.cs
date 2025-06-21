@@ -1,10 +1,10 @@
-﻿using Xunit;
-using Moq;
-using FluentAssertions;
-using Appointment_Management.Application.Services;
+﻿using Application.Services;
+using Appointment_Management.Application.DTOs;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Interfaces;
-using Appointment_Management.Application.DTOs;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 public class AppointmentTests
 {
@@ -51,7 +51,7 @@ public class AppointmentTests
             AppointmentDateTime = appointment.AppointmentDateTime,
             DoctorId = appointment.DoctorId
         };
-                
+
         Func<Task> act = async () => await _service.AddAsync(appointmentDto);
 
         await act.Should().NotThrowAsync();

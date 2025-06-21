@@ -1,9 +1,8 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Domain.Interfaces;
+﻿using Application.DTOs;
 using Appointment_Management.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+using Appointment_Management.Domain.Interfaces;
 
-namespace Appointment_Management.Application.Services
+namespace Application.Services
 {
     public class DoctorService
     {
@@ -40,7 +39,7 @@ namespace Appointment_Management.Application.Services
         }
 
         public async Task AddAsync(DoctorDto doctor)
-        {            
+        {
             await _repository.AddAsync(new Doctor
             {
                 Name = doctor.DoctorName,
@@ -63,7 +62,7 @@ namespace Appointment_Management.Application.Services
                     DoctorId = a.DoctorId
                 }).ToList();
                 await _repository.UpdateAsync(existingDoctor);
-            }            
+            }
             await _repository.SaveAsync();
         }
 

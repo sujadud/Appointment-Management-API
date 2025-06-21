@@ -2,9 +2,7 @@
 using Appointment_Management.Domain.Interfaces.IAudit;
 using Appointment_Management.Infrastructure.Data;
 using Appointment_Management.Infrastructure.Services;
-using Domain.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Appointment_Management.Infrastructure.Repositories
 {
