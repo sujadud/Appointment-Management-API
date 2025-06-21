@@ -5,6 +5,7 @@ using Appointment_Management.Domain.Entities.Enums;
 using Appointment_Management.Domain.Interfaces;
 using Appointment_Management.Infrastructure.Data;
 using Appointment_Management.Infrastructure.Repositories;
+using Appointment_Management.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,8 +19,8 @@ namespace Application.Services.Auth
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
 
-        public AuthService(AppDbContext context, IUserRepository userRepository, IConfiguration configuration)
-            : base(context)
+        public AuthService(AppDbContext context, IUserRepository userRepository, IConfiguration configuration, ICurrentUserService currentUserService)
+            : base(context, currentUserService) // Pass the required 'currentUserService' parameter
         {
             _userRepository = userRepository;
             _config = configuration;
@@ -50,12 +51,6 @@ namespace Application.Services.Auth
                 return false;
 
             var passwordHash = PasswordService.HashPassword(newPassword);
-            //var user = new User
-            //{
-            //    Id = userOB.Id,
-            //    Username = userOB.Username,
-            //    PasswordHash = passwordHash,
-            //};
             userOB.PasswordHash = passwordHash;
 
             try

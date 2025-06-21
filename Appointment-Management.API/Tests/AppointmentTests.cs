@@ -1,5 +1,5 @@
-﻿using Application.Services;
-using Appointment_Management.Application.DTOs;
+﻿using Application.DTOs;
+using Application.Services;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Interfaces;
 using FluentAssertions;
