@@ -1,9 +1,9 @@
 ﻿using Appointment_Management.Domain.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTOs
+namespace Application.DTOs.AuthDTOs
 {
-    public class UserDto
+    public class UserRegisterDto
     {
         [Required]
         public string Username { get; set; } = string.Empty;

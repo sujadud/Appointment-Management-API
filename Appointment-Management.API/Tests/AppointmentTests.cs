@@ -23,7 +23,7 @@ public class AppointmentTests
         var appointment = new AppointmentDto
         {
             Id = Guid.NewGuid(),
-            AppointmentDateTime = DateTime.UtcNow.AddDays(-1),
+            AppointmentDateTime = DateTime.Now.AddDays(-1),
             DoctorId = Guid.NewGuid()
         };
 
@@ -38,7 +38,7 @@ public class AppointmentTests
         {
             Id = Guid.NewGuid(),
             Name = "Test",
-            AppointmentDateTime = DateTime.UtcNow.AddDays(2),
+            AppointmentDateTime = DateTime.Now.AddDays(2),
             DoctorId = Guid.Parse("08e90631-5fff-40cc-abe4-08dd450efc6d")
         };
 

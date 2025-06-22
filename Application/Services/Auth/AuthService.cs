@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.IAuth;
-using Application.Services;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Entities.Enums;
 using Appointment_Management.Domain.Interfaces;
@@ -7,98 +6,71 @@ using Appointment_Management.Infrastructure.Data;
 using Appointment_Management.Infrastructure.Repositories;
 using Appointment_Management.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
-namespace Application.Services.Auth
+namespace Application.Services.Auth;
+
+public class AuthService : CommonRepository<User>, IAuthService
 {
-    public class AuthService : CommonRepository<User>, IAuthService
+    private readonly IUserRepository _userRepository;
+    private readonly IConfiguration _config;
+    private readonly TokenGenerator _tokenGenerator;
+
+    public AuthService(AppDbContext context, IUserRepository userRepository, IConfiguration configuration, ICurrentUserService currentUserService)
+        : base(context, currentUserService) // Pass the required 'currentUserService' parameter
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _config;
+        _userRepository = userRepository;
+        _config = configuration;
+        _tokenGenerator = new TokenGenerator(_config);
+    }
 
-        public AuthService(AppDbContext context, IUserRepository userRepository, IConfiguration configuration, ICurrentUserService currentUserService)
-            : base(context, currentUserService) // Pass the required 'currentUserService' parameter
+    public async Task<bool> RegisterUser(string username, string password, RoleType role)
+    {
+        User userOB = await _userRepository.GetUserByUsernameAsync(username);
+        if (userOB == null)
+            return false;
+
+        var passwordHash = PasswordService.HashPassword(password);
+        var user = new User
         {
-            _userRepository = userRepository;
-            _config = configuration;
+            Username = username,
+            PasswordHash = passwordHash,
+            Role = role
+        };
+        await _userRepository.AddUserAsync(user);
+
+        return true;
+    }
+
+    public async Task<bool> ChangePassword(string username, string newPassword)
+    {
+        User userOB = await _userRepository.GetUserByUsernameAsync(username);
+        if (userOB == null)
+            return false;
+
+        var passwordHash = PasswordService.HashPassword(newPassword);
+        userOB.PasswordHash = passwordHash;
+
+        try
+        {
+            await UpdateAsync(userOB);
+            await SaveAsync();
+        }
+        catch (Exception ex)
+        {
+            // Optionally log the exception here
+            return false;
         }
 
-        public async Task<bool> RegisterUser(string username, string password, RoleType role)
-        {
-            User userOB = await _userRepository.GetUserByUsernameAsync(username);
-            if (userOB == null)
-                return false;
+        return true;
+    }
 
-            var passwordHash = PasswordService.HashPassword(password);
-            var user = new User
-            {
-                Username = username,
-                PasswordHash = passwordHash,
-                Role = role
-            };
-            await _userRepository.AddUserAsync(user);
+    public async Task<string> AuthenticateUser(string username, string password)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+        if (user == null || !PasswordService.VerifyPassword(password, user.PasswordHash))
+            return null;
 
-            return true;
-        }
-
-        public async Task<bool> ChangePassword(ClaimsIdentity identity, string username, string newPassword)
-        {
-            User userOB = await _userRepository.GetUserByUsernameAsync(username);
-            if (userOB == null)
-                return false;
-
-            var passwordHash = PasswordService.HashPassword(newPassword);
-            userOB.PasswordHash = passwordHash;
-
-            try
-            {
-                await UpdateAsync(userOB);
-                await SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                // Optionally log the exception here
-                return false;
-            }
-
-            return true;
-        }
-
-        public async Task<string> AuthenticateUser(string username, string password)
-        {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-            if (user == null || !PasswordService.VerifyPassword(password, user.PasswordHash))
-                return null;
-
-            return GenerateJwtToken(user);
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            var key = _config["JwtSettings:Secret"];
-            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(2),
-                Issuer = _config["JwtSettings:Issuer"],
-                Audience = _config["JwtSettings:Audience"],
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            return new JwtSecurityTokenHandler()
-                            .WriteToken(new JwtSecurityTokenHandler()
-                            .CreateToken(tokenDescriptor));
-        }
+        var token = await this._tokenGenerator.GenerateJwtToken(user);
+        return token;
     }
 }

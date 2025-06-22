@@ -37,7 +37,7 @@ namespace Appointment_Management.Infrastructure.Repositories
         public virtual async Task AddAsync(T entity)
         {
             var currentUserId = _currentUserService.GetCurrentUserId();
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
 
             entity.CreatedBy = currentUserId;
             entity.CreatedAt = now;
@@ -50,8 +50,8 @@ namespace Appointment_Management.Infrastructure.Repositories
         public virtual async Task UpdateAsync(T entity)
         {
             var currentUserId = _currentUserService.GetCurrentUserId();
-            entity.UpdatedBy = currentUserId;
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedBy = currentUserId == Guid.Parse("00000000-0000-0000-0000-000000000000") ? entity.Id : currentUserId;
+            entity.UpdatedAt = DateTime.Now;
 
             _entities.Update(entity);
             await Task.CompletedTask;
@@ -73,12 +73,11 @@ namespace Appointment_Management.Infrastructure.Repositories
                 .Where(e => e.State == EntityState.Modified);
 
             var currentUserId = _currentUserService.GetCurrentUserId();
-            var now = DateTime.UtcNow;
 
             foreach (var entry in entries)
             {
                 entry.Entity.UpdatedBy = currentUserId;
-                entry.Entity.UpdatedAt = now;
+                entry.Entity.UpdatedAt = DateTime.Now;
             }
 
             await _context.SaveChangesAsync();

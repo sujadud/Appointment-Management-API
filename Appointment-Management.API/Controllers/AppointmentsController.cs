@@ -51,7 +51,7 @@ namespace Appointment_Management.API.Controllers
         public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointment)
         {
             var validationResult = await _validator.ValidateAsync(appointment);
-            var dateTimeNow = DateTime.UtcNow;
+            var dateTimeNow = DateTime.Now;
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
             //bool isDoctorExist = await _doctorService.ExistsAsync(appointment.DoctorId);
