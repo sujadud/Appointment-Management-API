@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Appointment_Management.Domain.Interfaces.IAudit;
 using System.ComponentModel.DataAnnotations;
-using Appointment_Management.Domain.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Appointment_Management.Domain.Entities
 {
@@ -13,6 +13,12 @@ namespace Appointment_Management.Domain.Entities
         public DateTime AppointmentDateTime { get; set; }
 
         public Guid DoctorId { get; set; }
+
+        // Additional properties for auditing
+        public Guid CreatedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [ForeignKey("DoctorId")]
         public Doctor Doctor { get; set; }

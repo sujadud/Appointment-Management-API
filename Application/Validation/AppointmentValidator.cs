@@ -1,10 +1,10 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services;
+﻿using Application.DTOs;
+using Application.Services;
 using FluentValidation;
 
-namespace Appointment_Management.Application.Validation
+namespace Application.Validation
 {
-    public class AppointmentValidator : AbstractValidator<AppointmentDto>
+    public class AppointmentValidator : AbstractValidator<AppointmentDTO>
     {
         private readonly DoctorService _doctorService;
 

@@ -1,4 +1,4 @@
-﻿namespace Appointment_Management.Domain.Interfaces
+﻿ namespace Appointment_Management.Domain.Interfaces
 {
     public interface IEntity
     {

@@ -1,8 +1,8 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Domain.Interfaces;
+﻿using Application.DTOs;
 using Appointment_Management.Domain.Entities;
+using Appointment_Management.Domain.Interfaces;
 
-namespace Appointment_Management.Application.Services
+namespace Application.Services
 {
     public class AppointmentService
     {
@@ -11,17 +11,17 @@ namespace Appointment_Management.Application.Services
         public AppointmentService(ICommonRepository<Appointment> repository)
         {
             _repository = repository;
-        }        
+        }
 
         public async Task SaveChangesAsync()
         {
             await _repository.SaveAsync();
         }
 
-        public async Task<AppointmentDto> GetByIdAsync(Guid id)
+        public async Task<AppointmentDTO> GetByIdAsync(Guid id)
         {
             var appointment = await _repository.GetByIdAsync(id);
-            return new AppointmentDto 
+            return new AppointmentDTO
             {
                 Id = appointment.Id,
                 PatientName = appointment.Name,
@@ -31,10 +31,10 @@ namespace Appointment_Management.Application.Services
             };
         }
 
-        public async Task<IEnumerable<AppointmentDto>> GetAllAsync()
+        public async Task<IEnumerable<AppointmentDTO>> GetAllAsync()
         {
             var appointments = await _repository.GetAllAsync();
-            return appointments.Select(appointment => new AppointmentDto
+            return appointments.Select(appointment => new AppointmentDTO
             {
                 Id = appointment.Id,
                 PatientName = appointment.Name,
@@ -44,7 +44,7 @@ namespace Appointment_Management.Application.Services
             });
         }
 
-        public async Task AddAsync(AppointmentDto appointment)
+        public async Task AddAsync(AppointmentDTO appointment)
         {
             var newAppointment = new Appointment
             {
@@ -58,7 +58,7 @@ namespace Appointment_Management.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(AppointmentDto appointment)
+        public async Task UpdateAsync(AppointmentDTO appointment)
         {
             var existAppointment = await _repository.GetByIdAsync(appointment.Id);
             if (existAppointment != null)

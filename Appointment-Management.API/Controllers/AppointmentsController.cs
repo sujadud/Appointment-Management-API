@@ -1,6 +1,6 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services;
-using Appointment_Management.Application.Validation;
+﻿using Application.DTOs;
+using Application.Services;
+using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +14,8 @@ namespace Appointment_Management.API.Controllers
         private readonly DoctorService _doctorService;
         private readonly AppointmentValidator _validator;
 
-        public AppointmentsController(AppointmentService appointmentService, 
-                                        AppointmentValidator appointmentValidator, 
+        public AppointmentsController(AppointmentService appointmentService,
+                                        AppointmentValidator appointmentValidator,
                                         DoctorService doctorService)
         {
             _appointmentService = appointmentService;
@@ -48,10 +48,10 @@ namespace Appointment_Management.API.Controllers
         // POST: api/appointments
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointment)
+        public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDTO appointment)
         {
             var validationResult = await _validator.ValidateAsync(appointment);
-            var dateTimeNow = DateTime.UtcNow;
+            var dateTimeNow = DateTime.Now;
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
             //bool isDoctorExist = await _doctorService.ExistsAsync(appointment.DoctorId);
@@ -78,7 +78,7 @@ namespace Appointment_Management.API.Controllers
         // PUT: api/appointments/{id}
         [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentDto appointment)
+        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentDTO appointment)
         {
             if (id != appointment.Id)
             {

@@ -1,10 +1,10 @@
-﻿using Xunit;
-using Moq;
-using FluentAssertions;
-using Appointment_Management.Application.Services;
+﻿using Application.DTOs;
+using Application.Services;
 using Appointment_Management.Domain.Entities;
 using Appointment_Management.Domain.Interfaces;
-using Appointment_Management.Application.DTOs;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 public class AppointmentTests
 {
@@ -20,10 +20,10 @@ public class AppointmentTests
     [Fact]
     public async Task CreateAppointment_WithPastDate_ShouldFail()
     {
-        var appointment = new AppointmentDto
+        var appointment = new AppointmentDTO
         {
             Id = Guid.NewGuid(),
-            AppointmentDateTime = DateTime.UtcNow.AddDays(-1),
+            AppointmentDateTime = DateTime.Now.AddDays(-1),
             DoctorId = Guid.NewGuid()
         };
 
@@ -38,20 +38,20 @@ public class AppointmentTests
         {
             Id = Guid.NewGuid(),
             Name = "Test",
-            AppointmentDateTime = DateTime.UtcNow.AddDays(2),
+            AppointmentDateTime = DateTime.Now.AddDays(2),
             DoctorId = Guid.Parse("08e90631-5fff-40cc-abe4-08dd450efc6d")
         };
 
         _mockRepo.Setup(repo => repo.AddAsync(appointment)).Returns(Task.CompletedTask);
 
-        var appointmentDto = new AppointmentDto
+        var appointmentDto = new AppointmentDTO
         {
             Id = appointment.Id,
             PatientName = appointment.Name,
             AppointmentDateTime = appointment.AppointmentDateTime,
             DoctorId = appointment.DoctorId
         };
-                
+
         Func<Task> act = async () => await _service.AddAsync(appointmentDto);
 
         await act.Should().NotThrowAsync();

@@ -1,5 +1,5 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services.Auth;
+﻿using Application.DTOs.AuthDTOs;
+using Application.Services.Auth;
 using Appointment_Management.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +17,7 @@ namespace Appointment_Management.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserDto model)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDTO model)
         {
             var success = await _authService.RegisterUser(model.Username, model.Password, (RoleType)model.Role);
             if (!success)
@@ -27,13 +27,22 @@ namespace Appointment_Management.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserDto model)
+        public async Task<IActionResult> Login([FromBody] LoginDTO model)
         {
             var token = await _authService.AuthenticateUser(model.Username, model.Password);
             if (token == null)
                 return Unauthorized(new { message = "Invalid credentials" });
 
             return Ok(new { Token = token });
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO model)
+        {
+            var success = await _authService.ChangePassword(model.Username, model.Password);
+            if (!success)
+                return BadRequest(new { message = "Failed to change password" });
+            return Ok(new { message = "Password changed successfully" });
         }
     }
 }

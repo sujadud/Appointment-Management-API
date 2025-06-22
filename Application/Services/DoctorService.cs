@@ -1,9 +1,8 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Domain.Interfaces;
+﻿using Application.DTOs;
 using Appointment_Management.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+using Appointment_Management.Domain.Interfaces;
 
-namespace Appointment_Management.Application.Services
+namespace Application.Services
 {
     public class DoctorService
     {
@@ -19,28 +18,28 @@ namespace Appointment_Management.Application.Services
             return await _repository.ExistsAsync(doctorId);
         }
 
-        public async Task<DoctorDto> GetByIdAsync(Guid id)
+        public async Task<DoctorDTO> GetByIdAsync(Guid id)
         {
             var doctor = await _repository.GetByIdAsync(id);
-            return new DoctorDto
+            return new DoctorDTO
             {
                 Id = doctor.Id,
                 DoctorName = doctor.Name,
             };
         }
 
-        public async Task<IEnumerable<DoctorDto>> GetAllAsync()
+        public async Task<IEnumerable<DoctorDTO>> GetAllAsync()
         {
             var doctors = await _repository.GetAllAsync();
-            return doctors.Select(d => new DoctorDto
+            return doctors.Select(d => new DoctorDTO
             {
                 Id = d.Id,
                 DoctorName = d.Name,
             });
         }
 
-        public async Task AddAsync(DoctorDto doctor)
-        {            
+        public async Task AddAsync(DoctorDTO doctor)
+        {
             await _repository.AddAsync(new Doctor
             {
                 Name = doctor.DoctorName,
@@ -48,7 +47,7 @@ namespace Appointment_Management.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(DoctorDto doctor)
+        public async Task UpdateAsync(DoctorDTO doctor)
         {
             var existingDoctor = await _repository.GetByIdAsync(doctor.Id);
             if (existingDoctor != null)
@@ -63,7 +62,7 @@ namespace Appointment_Management.Application.Services
                     DoctorId = a.DoctorId
                 }).ToList();
                 await _repository.UpdateAsync(existingDoctor);
-            }            
+            }
             await _repository.SaveAsync();
         }
 

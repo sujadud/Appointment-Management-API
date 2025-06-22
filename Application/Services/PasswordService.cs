@@ -1,23 +1,15 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace Appointment_Management.Application.Services
+﻿namespace Application.Services
 {
     public class PasswordService
     {
-        public static string HashPassword(string password, out string salt)
+        public static string HashPassword(string password)
         {
-            using var hmac = new HMACSHA256();
-            salt = Convert.ToBase64String(hmac.Key);
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hash);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        public static bool VerifyPassword(string password, string storedHash, string storedSalt)
+        public static bool VerifyPassword(string password, string storedHash)
         {
-            using var hmac = new HMACSHA256(Convert.FromBase64String(storedSalt));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hash) == storedHash;
+            return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
     }
 }

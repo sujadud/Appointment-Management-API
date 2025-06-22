@@ -1,8 +1,7 @@
-﻿using Appointment_Management.Application.DTOs;
-using Appointment_Management.Application.Services;
+﻿using Application.DTOs;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Appointment_Management.API.Controllers
 {
@@ -45,7 +44,7 @@ namespace Appointment_Management.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateDoctor([FromBody] DoctorDto doctor)
+        public async Task<IActionResult> CreateDoctor([FromBody] DoctorDTO doctor)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +57,7 @@ namespace Appointment_Management.API.Controllers
 
         [Authorize(Roles = "Doctor,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDoctor(Guid id, [FromBody] DoctorDto doctor)
+        public async Task<IActionResult> UpdateDoctor(Guid id, [FromBody] DoctorDTO doctor)
         {
             if (id != doctor.Id)
             {
