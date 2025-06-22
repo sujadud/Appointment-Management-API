@@ -48,7 +48,7 @@ namespace Appointment_Management.API.Controllers
         // POST: api/appointments
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointment)
+        public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDTO appointment)
         {
             var validationResult = await _validator.ValidateAsync(appointment);
             var dateTimeNow = DateTime.Now;
@@ -78,7 +78,7 @@ namespace Appointment_Management.API.Controllers
         // PUT: api/appointments/{id}
         [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentDto appointment)
+        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody] AppointmentDTO appointment)
         {
             if (id != appointment.Id)
             {

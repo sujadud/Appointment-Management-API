@@ -20,7 +20,7 @@ public class AppointmentTests
     [Fact]
     public async Task CreateAppointment_WithPastDate_ShouldFail()
     {
-        var appointment = new AppointmentDto
+        var appointment = new AppointmentDTO
         {
             Id = Guid.NewGuid(),
             AppointmentDateTime = DateTime.Now.AddDays(-1),
@@ -44,7 +44,7 @@ public class AppointmentTests
 
         _mockRepo.Setup(repo => repo.AddAsync(appointment)).Returns(Task.CompletedTask);
 
-        var appointmentDto = new AppointmentDto
+        var appointmentDto = new AppointmentDTO
         {
             Id = appointment.Id,
             PatientName = appointment.Name,

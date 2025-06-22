@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.AuthDTOs
 {
-    public class UserRegisterDto
+    public class UserRegisterDTO
     {
         [Required]
         public string Username { get; set; } = string.Empty;

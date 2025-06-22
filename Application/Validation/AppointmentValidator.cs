@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validation
 {
-    public class AppointmentValidator : AbstractValidator<AppointmentDto>
+    public class AppointmentValidator : AbstractValidator<AppointmentDTO>
     {
         private readonly DoctorService _doctorService;
 

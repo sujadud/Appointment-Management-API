@@ -18,27 +18,27 @@ namespace Application.Services
             return await _repository.ExistsAsync(doctorId);
         }
 
-        public async Task<DoctorDto> GetByIdAsync(Guid id)
+        public async Task<DoctorDTO> GetByIdAsync(Guid id)
         {
             var doctor = await _repository.GetByIdAsync(id);
-            return new DoctorDto
+            return new DoctorDTO
             {
                 Id = doctor.Id,
                 DoctorName = doctor.Name,
             };
         }
 
-        public async Task<IEnumerable<DoctorDto>> GetAllAsync()
+        public async Task<IEnumerable<DoctorDTO>> GetAllAsync()
         {
             var doctors = await _repository.GetAllAsync();
-            return doctors.Select(d => new DoctorDto
+            return doctors.Select(d => new DoctorDTO
             {
                 Id = d.Id,
                 DoctorName = d.Name,
             });
         }
 
-        public async Task AddAsync(DoctorDto doctor)
+        public async Task AddAsync(DoctorDTO doctor)
         {
             await _repository.AddAsync(new Doctor
             {
@@ -47,7 +47,7 @@ namespace Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(DoctorDto doctor)
+        public async Task UpdateAsync(DoctorDTO doctor)
         {
             var existingDoctor = await _repository.GetByIdAsync(doctor.Id);
             if (existingDoctor != null)

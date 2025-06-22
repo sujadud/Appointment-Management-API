@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs
 {
-    public class AppointmentDto
+    public class AppointmentDTO
     {
         public Guid Id { get; set; }
         public string PatientName { get; set; } = string.Empty;

@@ -17,7 +17,7 @@ namespace Appointment_Management.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserRegisterDto model)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDTO model)
         {
             var success = await _authService.RegisterUser(model.Username, model.Password, (RoleType)model.Role);
             if (!success)
