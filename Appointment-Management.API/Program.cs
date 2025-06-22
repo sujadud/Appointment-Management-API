@@ -19,6 +19,7 @@ builder.Services.RegisterServices(builder.Configuration);
 // JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var jwtKey = builder.Configuration["JwtSettings:Secret"] ?? throw new ArgumentNullException("JwtSettings:Secret is not configured.");
+var jwtSecretKeyBytes = Encoding.ASCII.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -36,7 +37,13 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey)),
+        IssuerSigningKey = new SymmetricSecurityKey(jwtSecretKeyBytes),
+        IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+        {
+            if (kid == "E7413E868C28A32FBFB70FA3992ED0A5D5B64A73")
+                return new[] { new SymmetricSecurityKey(jwtSecretKeyBytes) };
+            throw new SecurityTokenInvalidSigningKeyException($"Unknown kid: {kid}");
+        }
     };
 });
 
